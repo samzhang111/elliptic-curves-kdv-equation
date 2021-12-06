@@ -9,9 +9,19 @@
         <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/jsxgraph/distrib/jsxgraph.css" />
     </head>
     <body>
-        <div id="controls" class="jxgbox"></div>
-        <div id="kdv"></div>
-        <div id="curve" class="jxgbox"></div>
+        <div id="page">
+            <div id="leftcol">
+                <h1>Elliptic curves and traveling wave solutions to the KdV equation</h1>
+                <div id="description">What do <a href="https://en.wikipedia.org/wiki/Elliptic_curve" target="_blank">elliptic curves</a> have to do with the waves on shallow water surfaces? It is a surprising and beautiful fact of mathematics that they are deeply related. Individual elliptic curves correspond with different traveling wave solutions of <a href="https://en.wikipedia.org/wiki/Korteweg%E2%80%93De_Vries_equation" target="_blank">the KdV equation</a>, a nonlinear PDE that serves as a model of waves on shallow water surfaces. Move the red
+                    point below to control the parameterization of the elliptic curve and the corresponding solution associated with that curve. The point is initialized at a=4/3, b=-8/27, which coincides with the <a href="https://en.wikipedia.org/wiki/Soliton">1-soliton</a> solution.</div>
+                <div id="controls" class="jxgbox"></div>
+            </div>
+
+            <div id="rightcol">
+                <div id="kdv"></div>
+                <div id="curve" class="jxgbox"></div>
+            </div>
+        </div>
 
         <% for (var js in htmlWebpackPlugin.files.js) { %>
             <script src="<%= htmlWebpackPlugin.files.js[js] %>"></script>

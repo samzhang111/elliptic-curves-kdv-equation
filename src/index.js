@@ -12,7 +12,7 @@ const initPage = () => {
         boundingbox: [-controlRange, controlRange, controlRange, -controlRange],
         showCopyright: false,
         showNavigation: false, 
-        showInfobox: false, drag: {enabled: true}, pan: {enabled: false}, axis: true, grid: false,
+        showInfobox: false, drag: {enabled: true}, pan: {enabled: false}, axis: true, grid: false, zoom: {min: 1, max: 1},
         defaultAxes: {
             x : {
                 name: 'a',
@@ -27,7 +27,7 @@ const initPage = () => {
                     name: 'b',
                     label: {
                         position: 'rt',
-                            offset: [5, -10]
+                            offset: [-10, -10]
                     }
             }
         }
@@ -36,8 +36,11 @@ const initPage = () => {
     let controlPoint = boardControls.create("point", [4/3, -8/27], { name: "(a, b)", size: 5, fixed: false })
     let guideCurveTop = boardControls.create('functiongraph', [function(x){return Math.sqrt(-4/27 * x**3)}], {dash: 1})
     let guideCurveBottom = boardControls.create('functiongraph', [function(x){return -Math.sqrt(-4/27 * x**3)}], {dash: 1})
-    let moveControlPointButton = boardControls.create('button', [1, 4, 'Reset point', function() {
-         controlPoint.moveTo([4/3, -8/27], 0);
+
+    let controlPointInputA = boardControls.create("input", [0.5, -3, "4/3", "a="], {cssStyle: 'width: 5em'})
+    let controlPointInputB = boardControls.create("input", [0.5, -3.5, "-8/27", "b="], {cssStyle: 'width: 5em'})
+    let moveControlPointButton = boardControls.create('button', [0.5, -4, 'Move point', function() {
+         controlPoint.moveTo([eval(controlPointInputA.Value()), eval(controlPointInputB.Value())], 0);
      }], {});
 
 
