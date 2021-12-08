@@ -18,7 +18,7 @@ const initPage = () => {
      * Initialize controlling board
     *****/
 
-    const controlRange = 5
+    const controlRange = 3
 
     let boardControls = JXG.JSXGraph.initBoard("controls", {
         boundingbox: [-controlRange, controlRange, controlRange, -controlRange],
@@ -39,22 +39,23 @@ const initPage = () => {
                     name: 'b',
                     label: {
                         position: 'rt',
-                            offset: [-10, -10]
+                            offset: [5, -10]
                     }
             }
         }
     });
 
-    let controlPoint = boardControls.create("point", [4/3, -8/27], { name: "Drag me", size: 8, fixed: false, label: {fontSize: 16, offset: [10, 20]} })
+    let controlPoint = boardControls.create("point", [4/3, -8/27], { name: "Drag me", size: 8, fixed: false, label: {fontSize: 16, offset: [10, -10]} })
     let guideCurveTop = boardControls.create('functiongraph', [function(x){return Math.sqrt(-4/27 * x**3)}], {dash: 1})
     let guideCurveBottom = boardControls.create('functiongraph', [function(x){return -Math.sqrt(-4/27 * x**3)}], {dash: 1})
 
-    let controlPointInputA = boardControls.create("input", [0.5, -3, "4/3", "a="], {cssStyle: 'width: 5em'})
-    let controlPointInputB = boardControls.create("input", [0.5, -3.5, "-8/27", "b="], {cssStyle: 'width: 5em'})
-    let moveControlPointButton = boardControls.create('button', [0.5, -4, 'Move point', function() {
+    let controlPointInputA = boardControls.create("input", [0.5, -1.5, "4/3", "a="], {cssStyle: 'width: 5em'})
+    let controlPointInputB = boardControls.create("input", [0.5, -2, "-8/27", "b="], {cssStyle: 'width: 5em'})
+    let moveControlPointButton = boardControls.create('button', [0.5, -2.5, 'Move point', function() {
          controlPoint.moveTo([eval(controlPointInputA.Value()), eval(controlPointInputB.Value())], 0);
      }], {});
 
+    let ellipticEqn = boardControls.create("text", [0.2, 2.2, function(x) {return `y^2 = x^3 + ${controlPoint.X().toFixed(2)}x + ${controlPoint.Y().toFixed(2)}`}], {fontSize: 18})
 
     /*****
      * Elliptic curve board
@@ -71,7 +72,6 @@ const initPage = () => {
     let ellipticCurveTop = boardCurve.create('functiongraph', [function(x){return Math.sqrt(x**3 + controlPoint.X() *x + controlPoint.Y())}], {strokeWidth: 5, strokeColor: "#d1462f"})
     let ellipticCurveBottom = boardCurve.create('functiongraph', [function(x){return -Math.sqrt(x**3 + controlPoint.X() *x + controlPoint.Y())}], {strokeWidth: 5, strokeColor: "#d1462f"})
 
-    let ellipticEqn = boardControls.create("text", [0.2, 4.2, function(x) {return `y^2 = x^3 + ${controlPoint.X().toFixed(2)}x + ${controlPoint.Y().toFixed(2)}`}], {fontSize: 18})
 
     /*****
      * KdV equation
@@ -79,7 +79,7 @@ const initPage = () => {
 
     let mathbox2d = mathBox({
       element: document.querySelector("#kdv"),
-      plugins: ['core', 'controls', 'cursor', 'mathbox'],
+      plugins: ['core', 'controls', 'mathbox'],
       controls: {
         // Orbit controls, i.e. Euler angles, with gimbal lock
         klass: THREE.OrbitControls,
@@ -92,6 +92,7 @@ const initPage = () => {
     if (mathbox2d.fallback) throw "WebGL not supported"
 
     let three = mathbox2d.three;
+    three.controls.enabled = false
     three.renderer.setClearColor(new THREE.Color(0xFFFFFF), 1.0);
     three.renderer.setClearAlpha(0);
 
@@ -103,7 +104,7 @@ const initPage = () => {
 
     const xmin = -5;
     const ymin = -5;
-    const zmin = -3;
+    const zmin = -5;
     const xmax = 5;
     const ymax = 5;
     const zmax = 5;
@@ -114,8 +115,11 @@ const initPage = () => {
         y: new THREE.Color(0x2ECC40),
         z: new THREE.Color(0x0074D9),
     };
-    const offset = 3
-
+    const offset = {
+        x: 3,
+        y: 0,
+        z: 3
+    }
 
 
     let view = mathbox2d.cartesian({
@@ -126,10 +130,10 @@ const initPage = () => {
     view.transform({
         rotation: [pi/2, 0, 0]
     }).grid({
-      divideX: 20,
-      divideY: 20,
-      width: 8,
-      opacity: 0.9,
+      divideX: 40,
+      divideY: 40,
+      width: 4,
+      opacity: 1,
       zBias: -5,
     });
 
@@ -139,10 +143,10 @@ const initPage = () => {
         id: 'sampler',
         width: 128,
         expr: function (emit, x, j, t) {
-            let p = robustWeierstrassP(complex(x - (0.5*t % 10) + offset, -pi/2), controlPoint.X(), controlPoint.Y(), lastPoint) 
+            let p = robustWeierstrassP(complex(x - (0.5*t % 10) + offset.x, -pi/2), controlPoint.X(), controlPoint.Y(), lastPoint) 
             let z = -2 * p + 2/3
             lastPoint = p
-            emit(x, 0, z);
+            emit(x, 0, z - offset.z);
         },
         channels: 3,
     });
