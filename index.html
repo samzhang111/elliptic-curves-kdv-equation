@@ -7,13 +7,18 @@
             <link href="<%= htmlWebpackPlugin.files.css[css] %>" rel="stylesheet">
         <% } %>
         <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/jsxgraph/distrib/jsxgraph.css" />
+        <link rel="stylesheet" type="text/css" href="mathbox.css" />
     </head>
     <body>
         <div id="page">
             <div id="leftcol">
                 <h1>Elliptic curves and traveling wave solutions to the KdV equation</h1>
-                <div id="description">What do <a href="https://en.wikipedia.org/wiki/Elliptic_curve" target="_blank">elliptic curves</a> have to do with the waves on shallow water surfaces? It is a surprising and beautiful fact of mathematics that they are deeply related. Individual elliptic curves correspond with different traveling wave solutions of <a href="https://en.wikipedia.org/wiki/Korteweg%E2%80%93De_Vries_equation" target="_blank">the KdV equation</a>, a nonlinear PDE that serves as a model of waves on shallow water surfaces. Move the red
-                    point below to control the parameterization of the elliptic curve and the corresponding solution associated with that curve. The point is initialized at a=4/3, b=-8/27, which coincides with the <a href="https://en.wikipedia.org/wiki/Soliton">1-soliton</a> solution.</div>
+                <div id="description">
+                    What do <a href="https://en.wikipedia.org/wiki/Elliptic_curve" target="_blank">elliptic curves</a> have to do with waves on shallow water surfaces?
+                    It is a surprising and beautiful fact of mathematics that they are deeply related. Individual elliptic curves correspond with <em>traveling wave solutions</em> of <a href="https://en.wikipedia.org/wiki/Korteweg%E2%80%93De_Vries_equation" target="_blank">the KdV equation</a>, a nonlinear PDE that serves as a model of waves on shallow water surfaces.
+                    <p>
+                    Move the red point below, or enter numbers into the input fields, to pick an elliptic curve and the corresponding solution associated with that curve. The inset graph shows the elliptic curve, while the large visualization shows the traveling wave associated with the curve.
+                    The point is initialized at a=4/3, b=-8/27, which coincides with the <a href="https://en.wikipedia.org/wiki/Soliton">1-soliton</a> solution.</div>
                 <div id="controls" class="jxgbox"></div>
             </div>
 
@@ -27,6 +32,7 @@
             <script src="<%= htmlWebpackPlugin.files.js[js] %>"></script>
         <% } %>
         <script src="paulmasson.math.js" type="text/javascript"></script>
+        <script src="mathbox-bundle.min.js" type="text/javascript"></script>
     </body>
     
 </html>
